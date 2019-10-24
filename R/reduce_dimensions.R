@@ -163,17 +163,24 @@ reduce_dimension <- function(cds,
     cds <- add_citation(cds, "UMAP")
     if (verbose)
       message("Running Uniform Manifold Approximation and Projection")
-
-    umap_res = uwot::umap(as.matrix(preprocess_mat),
+    
+    umap_res = umap::umap(as.matrix(preprocess_mat),
                           n_components = max_components,
                           metric = umap.metric,
-                          min_dist = umap.min_dist,
-                          n_neighbors = umap.n_neighbors,
-                          fast_sgd = umap.fast_sgd,
-                          n_threads=cores,
-                          verbose=verbose,
-                          nn_method = umap.nn_method,
-                          ...)
+                          n_neighbours = umap.n_neighbors,
+                          min_dist = umap.min_dist)
+    umap_res = scale(umap_res$layout)
+        
+    #umap_res = uwot::umap(as.matrix(preprocess_mat),
+    #                      n_components = max_components,
+    #                      metric = umap.metric,
+    #                      min_dist = umap.min_dist,
+    #                      n_neighbors = umap.n_neighbors,
+    #                      fast_sgd = umap.fast_sgd,
+    #                      n_threads=cores,
+    #                      verbose=verbose,
+    #                      nn_method = umap.nn_method,
+    #                      ...)
 
     row.names(umap_res) <- colnames(cds)
     reducedDims(cds)$UMAP <- umap_res

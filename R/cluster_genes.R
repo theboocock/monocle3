@@ -69,16 +69,24 @@ find_gene_modules <- function(cds,
   preprocess_mat <- cds@preprocess_aux$gene_loadings
   preprocess_mat = preprocess_mat[rownames(cds),]
 
-  umap_res = uwot::umap(as.matrix(preprocess_mat),
-                        n_components = max_components,
-                        metric = umap.metric,
-                        min_dist = umap.min_dist,
-                        n_neighbors = umap.n_neighbors,
-                        fast_sgd = umap.fast_sgd,
-                        n_threads=cores,
-                        verbose=verbose,
-                        nn_method= umap.nn_method,
-                        ...)
+  umap_res = umap::umap(as.matrix(preprocess_mat),
+                          n_components = max_components,
+                          metric = umap.metric,
+                          n_neighbours = umap.n_neighbors,
+                          min_dist = umap.min_dist)
+  umap_res = scale(umap_res$layout)
+  #umap_res h
+
+  #umap_res = uwot::umap(as.matrix(preprocess_mat),
+  #                      n_components = max_components,
+  #                      metric = umap.metric,
+  #                      min_dist = umap.min_dist,
+  #                      n_neighbors = umap.n_neighbors,
+  #                      fast_sgd = umap.fast_sgd,
+  #                      n_threads=cores,
+  #                      verbose=verbose,
+  #                      nn_method= umap.nn_method,
+  #                      ...)
 
   row.names(umap_res) <- row.names(preprocess_mat)
   colnames(umap_res) <- paste0('dim_', 1:ncol(umap_res))
