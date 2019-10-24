@@ -169,7 +169,8 @@ reduce_dimension <- function(cds,
                           metric = umap.metric,
                           n_neighbours = umap.n_neighbors,
                           min_dist = umap.min_dist)
-    umap_res = scale(umap_res$layout)
+    umap_res = umap_res$layout
+    #umap_res = scale(umap_res$layout)
         
     #umap_res = uwot::umap(as.matrix(preprocess_mat),
     #                      n_components = max_components,
